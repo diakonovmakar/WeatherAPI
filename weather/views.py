@@ -1,10 +1,9 @@
-from weather.services import weather_status, what_weather
 from django.http import JsonResponse
 
-# Create your views here.
+from weather.services import runner, weather_status, what_weather
 
 
 def index(request):
-    weather = what_weather(request)
+    weather = runner(request)
     result = weather_status(weather)
     return JsonResponse(result)
