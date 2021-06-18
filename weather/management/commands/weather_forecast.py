@@ -1,6 +1,5 @@
-from weather.services import weather_status, what_country, what_weather
+from weather.services import assign_parameters, weather_status, get_weather
 from django.core.management.base import BaseCommand
-from ...models import url_params
 
 
 class Command(BaseCommand):
@@ -11,10 +10,18 @@ class Command(BaseCommand):
         parser.add_argument('country_code', type=str, help='Country code for a forecast')
 
     def handle(self, *args, **kwargs):
-        date = kwargs['date']
-        country_code = kwargs['country_code']
-        url_params['dt'] = date
-        what_country(country_code)
-        weather = what_weather()
+        url_params = {
+        'key': '3a01053352db4121b28133514211506',
+        'q': '',
+        'dt': '',
+        }
+        coordinates = {
+        'CZ': '50.073658, 14.418540',  #  Prague
+        'SK': '48.148598, 17.107748',  #  Bratislava
+        'UK': '51.509865, -0.118092',  #  London
+        }
+        url_params['dt'] = kwargs['date']
+        url_params['q'] = coordinates[f'{kwargs["country_code"]}']
+        weather = get_weather(url_params)
         result = weather_status(weather)
         self.stdout.write("%s" % result)

@@ -1,15 +1,18 @@
 from django.shortcuts import render
-from .models import country_codes_db
 import datetime as dt
 
 
 def index(request):
+    country_codes_db = {
+        'CZ': '',
+        'SK': '',
+        'UK': ''
+    }
+    dates_db = {}
     country_codes = ''
     dates = ''
 
     today = dt.datetime.now().date()
-    dates_db = {}
-
     for i in range(0, 16, 1):
         dates_db[f'{today + dt.timedelta(days=i)}'] = today + dt.timedelta(days=i)
 
