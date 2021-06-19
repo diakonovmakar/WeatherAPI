@@ -1,13 +1,14 @@
 from django.shortcuts import render
 import datetime as dt
 
-
-def index(request):
-    country_codes_db = {
+country_codes_db = {
         'CZ': '',
         'SK': '',
         'UK': ''
     }
+
+
+def index(request):
     dates_db = {}
     country_codes = ''
     dates = ''

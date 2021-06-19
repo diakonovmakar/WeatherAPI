@@ -1,19 +1,26 @@
 from django.http import JsonResponse
+from django.views import View
 
-from weather.services import weather_status, get_weather, assign_parameters
+from weather.services import weather_status, get_weather, validate_date, validate_country_code
 
 
-def index(request):
-    params = assign_parameters(request)
-    if len(params) < 3:
-        error = params
-        return JsonResponse(error)
-    weather = get_weather(params)
-    print(weather)
-    for i in weather:
-        print(len(i))
-        if len(i) == 5:
-            error = weather
-            return JsonResponse(error)
-    result = weather_status(weather)
-    return JsonResponse(result)
+class ForecastWeather(View):
+    def get(self, request):
+        date = request.GET.get('date', '')
+        country_code = request.GET.get('country_code', '')
+
+        code_validation = validate_country_code(country_code)
+        date_validation = validate_date(date)
+        print(date, country_code)
+        if code_validation['success'] is True and date_validation['success'] is True:
+            weather = get_weather(date, country_code)
+            result = weather_status(weather)
+            return JsonResponse(result, status=200)
+        elif code_validation['success'] is not True:
+            print(code_validation)
+            return JsonResponse(code_validation, status=400)
+        elif date_validation['success'] is not True:
+            print(date_validation)
+            return JsonResponse(date_validation, status=400)
+        else:
+            return JsonResponse({'error': 'Unexpected error.'}, status=500)
