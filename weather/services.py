@@ -1,32 +1,45 @@
-import requests as rq
 import datetime as dt
+from collections import namedtuple
+
+import requests as rq
 
 coordinates = {
     'CZ': '50.073658, 14.418540',  #  Prague
     'SK': '48.148598, 17.107748',  #  Bratislava
     'UK': '51.509865, -0.118092'}  #  London
 
+weather_api_token = '3a01053352db4121b28133514211506'
+
+Result = namedtuple('Result', ['success', 'error', 'forecast'])
+
 
 def get_weather(date, country_code):
     base_url = 'http://api.weatherapi.com/v1/forecast.json'
     url_params = {
-        'key': '3a01053352db4121b28133514211506',
+        'key': weather_api_token,
         'q': coordinates[country_code],
         'dt': date}
+
     try:
         response = rq.get(base_url, params=url_params)
-    except rq.Connectionerror:
-        return {
-            'success': False,
-            'error': 'Network error'}
+    except rq.ConnectionError:
+        return Result(
+            False,
+            'Network error',
+            '')
 
     if response.status_code == 200:
-        return {
-            'temperature': response.json()['forecast']['forecastday'][0]['day']['avgtemp_c']}
+        temp = response.json()['forecast']['forecastday'][0]['day']['avgtemp_c']
+        forecast = weather_status(temp)
+        return Result(
+            True,
+            '',
+            forecast)
     else:
-        return {
-            'success': False,
-            'error': 'Forcast server unavaiable. Try again later'}
+        return Result(
+            False,
+            'Forcast server unavaiable. Try again later',
+            '')
 
 
 def validate_date(request_date):
@@ -35,38 +48,44 @@ def validate_date(request_date):
     try:
         date = dt.datetime.strptime(request_date, '%Y-%m-%d').date()
         if date >= today and date <= max_date:
-            return {
-                'success': True,
-                'error': ''}
+            return Result(
+                True,
+                '',
+                '')
         else:
-            return {
-                'success': False,
-                'error': 'The date is incorrect'}
+            return Result(
+                False,
+                'The date is incorrect',
+                '')
     except ValueError:
-        return {
-            'success': False,
-            'error': 'Date is not acceptable'}
+        return Result(
+            False,
+            'Date is not acceptable',
+            '')
     except:
-        return {
-            'success': False,
-            'error': 'Unexpected error with a date'}
+        return Result(
+            False,
+            'Unexpected error with a date',
+            '')
 
 
 def validate_country_code(country_code):
     if country_code not in coordinates.keys():
-        return {
-            'success': False,
-            'error': 'The country code is incorrect'}
+        return Result(
+            False,
+            'The country code is incorrect',
+            '')
     else:
-        return {
-            'success': True,
-            'error': ''}
+        return Result(
+            True,
+            '',
+            '')
 
 
-def weather_status(weather):
-    if weather['temperature'] > 20:
-        return {'forecast': 'good'}
-    elif weather['temperature'] >= 10:
-        return {'forecast': 'soso'}
+def weather_status(temperature):
+    if temperature > 20:
+        return 'good'
+    elif temperature >= 10:
+        return 'soso'
     else:
-        return {'forecast': 'bad'}
+        return 'bad'
