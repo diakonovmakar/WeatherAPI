@@ -11,7 +11,7 @@ CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 @method_decorator(cache_page(CACHE_TTL), name='get')
-class ForecastWeather(View):
+class ForecastWeatherView(View):
     def get(self, request):
         date = request.GET.get('date', '')
         country_code = request.GET.get('country_code', '')
