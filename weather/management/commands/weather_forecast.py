@@ -10,20 +10,6 @@ class Command(BaseCommand):
         parser.add_argument('country_code', type=str, help='Country code for a forecast')
 
     def handle(self, *args, **kwargs):
-        '''
-        url_params = {
-        'key': '3a01053352db4121b28133514211506',
-        'q': '',
-        'dt': '',
-        }
-        coordinates = {
-        'CZ': '50.073658, 14.418540',  #  Prague
-        'SK': '48.148598, 17.107748',  #  Bratislava
-        'UK': '51.509865, -0.118092',  #  London
-        }
-        url_params['dt'] = kwargs['date']
-        url_params['q'] = coordinates[f'{kwargs["country_code"]}']
-        '''
         country_code = kwargs['country_code']
         date = kwargs['date']
         code_validation = validate_country_code(country_code)
@@ -37,4 +23,4 @@ class Command(BaseCommand):
         elif date_validation['success'] is not True:
             return self.stdout.write("%s" % date_validation)
         else:
-            return self.stdout.write({'error': 'Unexpected error.'})        
+            return self.stdout.write({'error': 'Unexpected error.'})

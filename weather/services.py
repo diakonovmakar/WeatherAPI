@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 import requests as rq
 import datetime as dt
 
@@ -49,8 +48,8 @@ def validate_date(request_date):
             'error': 'Date is not acceptable'}
     except:
         return {
-        'success': False,
-        'error': 'Unexpected error with a date'}
+            'success': False,
+            'error': 'Unexpected error with a date'}
 
 
 def validate_country_code(country_code):
@@ -67,7 +66,7 @@ def validate_country_code(country_code):
 def weather_status(weather):
     if weather['temperature'] > 20:
         return {'forecast': 'good'}
-    elif weather['temperature'] <= 20 and weather['temperature'] >= 10:
+    elif weather['temperature'] >= 10:
         return {'forecast': 'soso'}
     else:
         return {'forecast': 'bad'}
