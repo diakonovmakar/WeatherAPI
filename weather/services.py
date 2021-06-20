@@ -5,14 +5,17 @@ from collections import namedtuple
 import requests as rq
 
 from api.settings import env
+
+
+weather_api_token = env('WEATHER_API_TOKEN')
+
+Result = namedtuple('Result', ['success', 'error', 'forecast'])
+
 coordinates = {
     'CZ': '50.073658, 14.418540',  #  Prague
     'SK': '48.148598, 17.107748',  #  Bratislava
     'UK': '51.509865, -0.118092'}  #  London
 
-weather_api_token = env('WEATHER_API_TOKEN')
-
-Result = namedtuple('Result', ['success', 'error', 'forecast'])
 
 def get_weather(date, country_code):
     base_url = 'http://api.weatherapi.com/v1/forecast.json'
