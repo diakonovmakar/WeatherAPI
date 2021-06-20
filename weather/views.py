@@ -1,16 +1,9 @@
-from django.conf import settings
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.views import View
 
-from weather.services import weather_status, get_weather, validate_date, validate_country_code
-
-CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+from weather.services import get_weather, validate_date, validate_country_code
 
 
-@method_decorator(cache_page(CACHE_TTL), name='get')
 class ForecastWeatherView(View):
     def get(self, request):
         date = request.GET.get('date', '')

@@ -1,4 +1,4 @@
-from weather.services import validate_country_code, validate_date, get_weather, Result
+from weather.services import validate_country_code, validate_date, get_weather
 from django.core.management.base import BaseCommand
 
 
@@ -32,17 +32,3 @@ class Command(BaseCommand):
             return self.stdout.write("%s" % result)
         else:
             return self.stdout.write({'error': 'Unexpected error'})
-        '''
-        code_validation = validate_country_code(country_code)
-        date_validation = validate_date(date)
-        if code_validation.success is True and date_validation.success is True:
-            weather = get_weather(date, country_code)
-            result = weather_status(weather)
-            return self.stdout.write("%s" % result)
-        elif code_validation.success is not True:
-            return self.stdout.write("%s" % code_validation)
-        elif date_validation.success is not True:
-            return self.stdout.write("%s" % date_validation)
-        else:
-            return self.stdout.write({'error': 'Unexpected error.'})
-'''
