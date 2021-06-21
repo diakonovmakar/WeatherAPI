@@ -6,7 +6,6 @@ from .views import ForecastWeatherView
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
-#  app_name = 'weather'
 urlpatterns = [
     path('', cache_page(CACHE_TTL)(ForecastWeatherView.as_view())),
 ]

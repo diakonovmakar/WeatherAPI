@@ -21,8 +21,8 @@ def get_weather(date, country_code):
     base_url = 'http://api.weatherapi.com/v1/forecast.json'
     url_params = {
         'key': weather_api_token,
-        'q': coordinates[country_code],
-        'dt': date}
+        'dt': date,
+        'q': coordinates[country_code]}
 
     try:
         response = rq.get(base_url, params=url_params)

@@ -9,8 +9,8 @@ class ForecastWeatherView(View):
         date = request.GET.get('date', '')
         country_code = request.GET.get('country_code', '')
 
-        code_validation = validate_country_code(country_code)
         date_validation = validate_date(date)
+        code_validation = validate_country_code(country_code)        
 
         if code_validation.success is True and date_validation.success is True:
             forecast = get_weather(date, country_code)
