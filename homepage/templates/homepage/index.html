@@ -4,8 +4,11 @@
       <meta charset="UTF-8">
   </head>
   <body>
+    <header>
       <h1>Weather API</h1>
-       <br>
+    </header>
+    <br>
+    <main>
       <form action="weather-forecast/" method="GET">        
         <h2>Choose a region</h2>
           {{country_codes | safe}}
@@ -14,5 +17,6 @@
         <br>
         <input type="submit" value="Enter">
       </form>
+    </main>
   </body>
 </html>
